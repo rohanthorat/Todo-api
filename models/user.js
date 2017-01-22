@@ -1,8 +1,8 @@
 // ****author: Rohan Thorat*****
-module.exports = function (sequelize, DataTypes) {
+module.exports = function (sequelize, DateTypes) {
 	return sequelize.define('user', {
 		email: {
-			type: DataTypes.STRING,
+			type: DateTypes.STRING,
 			allowNull: false,
 			unique: true,
 			validate: {
@@ -10,11 +10,19 @@ module.exports = function (sequelize, DataTypes) {
 			}
 		},
 		password: {
-			type: DataTypes.STRING,
+			type: DateTypes.STRING,
 			allowNull: false,
 			validate: {
-				len: [7,100]
+				len: [7, 100]
 			}
 		}
-	})			
-}
+	}, {
+		hooks: {
+			beforeValidate: function (user, options) {
+				if (typeof user.email === 'string') {
+					user.email = user.email.toLowerCase();
+				}
+			}
+		}
+	});
+};
