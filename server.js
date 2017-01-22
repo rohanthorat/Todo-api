@@ -1,3 +1,5 @@
+// ****author: Rohan Thorat*****
+
 var express = require('express');
 var bodyParser = require('body-parser');
 var _ = require("underscore");
@@ -117,6 +119,16 @@ app.put('/todos/:id', function (req, res) {
 	});
 });
 
+
+app.post('/user', function (req, res) {
+		var requestedBody = _.pick(req.body,'email', 'password');
+
+		db.user.create(requestedBody).then(function (user) {
+			res.json(user.toJSON());
+		}, function (e) {
+			res.status(400).json(e);
+		});
+});
 
 db.sequelize.sync().then(function () {
 		app.listen(PORT, function () {
